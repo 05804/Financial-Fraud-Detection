@@ -52,4 +52,23 @@ The project creates additional features from the original transaction informatio
 A logarithmic transformation of transaction amount:
 
 ```text
-Amount_Log = log1p(Amount)
+Amount_Log = log1p(Amount)---
+
+## 🖥️ Dashboard Screenshots
+
+### Main Dashboard
+
+![Financial Fraud Detection Dashboard](images/dashboard-main.png)
+
+### Fraud Analytics
+
+![Fraud Analytics Dashboard](images/dashboard-analytics.png)
+
+### Fraud Detection Example
+
+![Fraud Detection Example](images/fraud-example.png)
+
+### Additional Dashboard View
+
+![Additional Dashboard View](images/fraud-example%20extn.png)
+

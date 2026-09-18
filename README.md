@@ -307,5 +307,5 @@ Place the dataset at:
 
 B.Tech - Computer Science & Engineering (Data Science)
 
-Complete project README
+
 

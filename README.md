@@ -12,15 +12,15 @@ Financial fraud detection is a highly imbalanced binary classification problem b
 
 This project:
 
-- Performs exploratory data analysis
-- Creates transaction-based features
-- Handles severe class imbalance
-- Trains Logistic Regression, Random Forest, and XGBoost models
-- Compares models using fraud-focused evaluation metrics
-- Optimizes the fraud classification threshold
-- Evaluates the final model on an untouched test set
-- Generates fraud probability and risk scores
-- Provides an interactive Streamlit dashboard
+* Performs exploratory data analysis
+* Creates transaction-based features
+* Handles severe class imbalance
+* Trains Logistic Regression, Random Forest, and XGBoost models
+* Compares models using fraud-focused evaluation metrics
+* Optimizes the fraud classification threshold
+* Evaluates the final model on an untouched test set
+* Generates fraud probability and risk scores
+* Provides an interactive Streamlit dashboard
 
 ---
 
@@ -30,17 +30,17 @@ The project uses the Credit Card Fraud Detection dataset.
 
 ### Dataset Statistics
 
-| Metric | Value |
-|---|---:|
-| Total transactions | 284,807 |
-| Normal transactions | 284,315 |
-| Fraudulent transactions | 492 |
-| Fraud percentage | 0.1727% |
+| Metric                  |   Value |
+| ----------------------- | ------: |
+| Total transactions      | 284,807 |
+| Normal transactions     | 284,315 |
+| Fraudulent transactions |     492 |
+| Fraud percentage        | 0.1727% |
 
 The dataset contains anonymized transaction features `V1` through `V28`, together with `Time`, `Amount`, and `Class`.
 
-- `Class = 0` → Normal transaction
-- `Class = 1` → Fraudulent transaction
+* `Class = 0` → Normal transaction
+* `Class = 1` → Fraudulent transaction
 
 The raw dataset is not included in the GitHub repository.
 
@@ -96,10 +96,10 @@ Because of this severe imbalance, accuracy alone is not sufficient for evaluatin
 
 The project therefore focuses on:
 
-- Precision
-- Recall
-- F1-score
-- PR-AUC
+* Precision
+* Recall
+* F1-score
+* PR-AUC
 
 SMOTE was also evaluated as an imbalance-handling experiment.
 
@@ -111,8 +111,8 @@ Instead of relying only on the default probability threshold of `0.5`, multiple 
 
 For the final XGBoost model:
 
-- Selected threshold: **0.2**
-- Validation F1-score: **0.8456**
+* Selected threshold: **0.2**
+* Validation F1-score: **0.8456**
 
 The selected threshold was then used for the final test-set evaluation.
 
@@ -120,21 +120,21 @@ The selected threshold was then used for the final test-set evaluation.
 
 ## Final XGBoost Results
 
-The final XGBoost model was evaluated on the untouched test set.
+The final XGBoost model was evaluated on an untouched test set.
 
-| Metric | Result |
-|---|---:|
-| Precision | 88% |
-| Recall | 85% |
-| F1-score | 0.86 |
-| PR-AUC | 0.8771 |
+| Metric    | Result |
+| --------- | -----: |
+| Precision |    88% |
+| Recall    |    85% |
+| F1-score  |   0.86 |
+| PR-AUC    | 0.8771 |
 
 ### Confusion Matrix
 
-| | Predicted Normal | Predicted Fraud |
-|---|---:|---:|
-| Actual Normal | 56,853 | 11 |
-| Actual Fraud | 15 | 83 |
+|               | Predicted Normal | Predicted Fraud |
+| ------------- | ---------------: | --------------: |
+| Actual Normal |           56,853 |              11 |
+| Actual Fraud  |               15 |              83 |
 
 The model correctly detected **83 fraudulent transactions** and missed **15 fraudulent transactions** in the final test set.
 
@@ -144,13 +144,13 @@ The model correctly detected **83 fraudulent transactions** and missed **15 frau
 
 The application converts the model's fraud probability into a risk score from **0 to 100**.
 
-| Risk Score | Risk Level |
-|---:|---|
-| 0–29.99 | Low Risk |
-| 30–69.99 | Medium Risk |
-| 70–100 | High Risk |
+| Risk Score | Risk Level  |
+| ---------: | ----------- |
+|    0–29.99 | Low Risk    |
+|   30–69.99 | Medium Risk |
+|     70–100 | High Risk   |
 
-The fraud classification threshold used by the final model is **0.2**.
+The final XGBoost fraud classification threshold is **0.2**.
 
 ---
 
@@ -160,18 +160,18 @@ The project includes an interactive Streamlit dashboard for transaction-level fr
 
 The dashboard provides:
 
-- Transaction selection
-- Transaction amount
-- Approximate transaction hour
-- Fraud probability
-- Risk score
-- Risk level
-- Fraud/normal prediction
-- Transaction feature inspection
-- Dataset statistics
-- Fraud analytics
-- Model performance
-- Risk level guide
+* Transaction selection
+* Transaction amount
+* Approximate transaction hour
+* Fraud probability
+* Risk score
+* Risk level
+* Fraud/normal prediction
+* Transaction feature inspection
+* Dataset statistics
+* Fraud analytics
+* Model performance
+* Risk level guide
 
 To run the dashboard:
 
@@ -202,27 +202,34 @@ To run the dashboard:
 ## Project Structure
 
 Financial-Fraud-Detection/
-├── app/
-│   └── app.py
-├── data/
-│   ├── raw/
-│   └── processed/
-├── images/
-│   ├── dashboard-main.png
-│   ├── dashboard-analytics.png
-│   ├── fraud-example.png
-│   └── fraud-example extn.png
-├── models/
-│   └── fraud_model.pkl
-├── notebooks/
-│   └── fraud_detection.ipynb
-├── src/
-│   ├── explore_data.py
-│   └── predict.py
-├── .gitignore
-├── README.md
-├── requirements.txt
-└── test.py
+
+* app/
+
+  * app.py
+* data/
+
+  * raw/
+  * processed/
+* images/
+
+  * dashboard-main.png
+  * dashboard-analytics.png
+  * fraud-example.png
+  * fraud-example extn.png
+* models/
+
+  * fraud_model.pkl
+* notebooks/
+
+  * fraud_detection.ipynb
+* src/
+
+  * explore_data.py
+  * predict.py
+* .gitignore
+* README.md
+* requirements.txt
+* test.py
 
 ---
 
@@ -268,44 +275,42 @@ Place the dataset at:
 
 ## Technologies Used
 
-- Python
-- Pandas
-- NumPy
-- Scikit-learn
-- XGBoost
-- imbalanced-learn
-- Matplotlib
-- Seaborn
-- Joblib
-- Streamlit
+* Python
+* Pandas
+* NumPy
+* Scikit-learn
+* XGBoost
+* imbalanced-learn
+* Matplotlib
+* Seaborn
+* Joblib
+* Streamlit
 
 ---
 
 ## Key Concepts Demonstrated
 
-- Binary classification
-- Exploratory Data Analysis
-- Feature engineering
-- Highly imbalanced datasets
-- SMOTE
-- Class weighting
-- Logistic Regression
-- Random Forest
-- XGBoost
-- Precision and Recall
-- F1-score
-- PR-AUC
-- Decision threshold optimization
-- Model persistence
-- Prediction pipelines
-- Streamlit application development
+* Binary classification
+* Exploratory Data Analysis
+* Feature engineering
+* Highly imbalanced datasets
+* SMOTE
+* Class weighting
+* Logistic Regression
+* Random Forest
+* XGBoost
+* Precision and Recall
+* F1-score
+* PR-AUC
+* Decision threshold optimization
+* Model persistence
+* Prediction pipelines
+* Streamlit application development
 
 ---
 
 ## Author
+
 **Shaik Junaid**
 
 B.Tech - Computer Science & Engineering (Data Science)
-
-
-

@@ -1,6 +1,3 @@
-Absolutely. Let's finish this cleanly. ❤️
-
-Below is the complete README.md in one single block. Delete everything currently in your GitHub README editor and paste this entire block at once.
 
 # Financial Fraud Detection & Risk Prediction
 

@@ -1,5 +1,3 @@
-Yes. This is the **final clean version**. Delete everything currently in your GitHub `README.md` editor and paste **only the text below**, exactly as it is.
-
 # Financial Fraud Detection & Risk Prediction
 
 An end-to-end machine learning system for detecting potentially fraudulent financial transactions and assigning a risk score.

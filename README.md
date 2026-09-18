@@ -307,6 +307,3 @@ Place the dataset at:
 
 B.Tech - Computer Science & Engineering (Data Science)
 
-**Shaik Junaid**
-
-B.Tech - Computer Science & Engineering (Data Science)

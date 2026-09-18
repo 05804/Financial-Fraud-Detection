@@ -1,3 +1,5 @@
+Yes. This is the **final clean version**. Delete everything currently in your GitHub `README.md` editor and paste **only the text below**, exactly as it is.
+
 # Financial Fraud Detection & Risk Prediction
 
 An end-to-end machine learning system for detecting potentially fraudulent financial transactions and assigning a risk score.
@@ -76,15 +78,15 @@ Used as the baseline classification model.
 
 ### Random Forest
 
-A tree-based ensemble model using class weighting to address the severe class imbalance.
+A tree-based ensemble model using class weighting to address severe class imbalance.
 
-**Final Test PR-AUC: 0.8629**
+**PR-AUC: 0.8629**
 
 ### XGBoost
 
 A gradient boosting model used as the final prediction model.
 
-**Final Test PR-AUC: 0.8771**
+**PR-AUC: 0.8771**
 
 ---
 
@@ -203,33 +205,33 @@ To run the dashboard:
 
 Financial-Fraud-Detection/
 
-* app/
+* `app/`
 
-  * app.py
-* data/
+  * `app.py`
+* `data/`
 
-  * raw/
-  * processed/
-* images/
+  * `raw/`
+  * `processed/`
+* `images/`
 
-  * dashboard-main.png
-  * dashboard-analytics.png
-  * fraud-example.png
-  * fraud-example extn.png
-* models/
+  * `dashboard-main.png`
+  * `dashboard-analytics.png`
+  * `fraud-example.png`
+  * `fraud-example extn.png`
+* `models/`
 
-  * fraud_model.pkl
-* notebooks/
+  * `fraud_model.pkl`
+* `notebooks/`
 
-  * fraud_detection.ipynb
-* src/
+  * `fraud_detection.ipynb`
+* `src/`
 
-  * explore_data.py
-  * predict.py
-* .gitignore
-* README.md
-* requirements.txt
-* test.py
+  * `explore_data.py`
+  * `predict.py`
+* `.gitignore`
+* `README.md`
+* `requirements.txt`
+* `test.py`
 
 ---
 

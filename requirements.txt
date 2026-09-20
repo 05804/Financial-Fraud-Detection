@@ -7,3 +7,5 @@ xgboost
 imbalanced-learn
 streamlit
 joblib
+fastapi
+uvicorn[standard]

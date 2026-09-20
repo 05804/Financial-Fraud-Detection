@@ -27,3 +27,9 @@ jobs:
 
       - name: Run tests
         run: pytest -q
+
+      - name: Build Streamlit Docker image
+        run: docker build -t fraud-dashboard:ci .
+
+      - name: Build FastAPI Docker image
+        run: docker build -f api/Dockerfile -t fraud-api:ci .

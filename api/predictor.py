@@ -1,15 +1,27 @@
 import joblib
 import numpy as np
 import pandas as pd
+import boto3
 from pathlib import Path
 
 
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
-MODEL_PATH = PROJECT_ROOT / "models" / "fraud_model.pkl"
+S3_BUCKET = "financial-fraud-detection-169523632531"
+S3_KEY = "models/fraud_model.pkl"
+
+LOCAL_MODEL_PATH = Path("/tmp/fraud_model.pkl")
+
+
+# Download the model from private S3 when the API starts
+s3 = boto3.client("s3")
+s3.download_file(
+    S3_BUCKET,
+    S3_KEY,
+    str(LOCAL_MODEL_PATH)
+)
 
 
 # Load the model once when the API starts
-model_data = joblib.load(MODEL_PATH)
+model_data = joblib.load(LOCAL_MODEL_PATH)
 
 model = model_data["model"]
 threshold = model_data["threshold"]
@@ -35,6 +47,7 @@ def predict_transaction(transaction: dict):
     )
 
     transaction_df = transaction_df[model.feature_names_in_]
+
     fraud_probability = model.predict_proba(
         transaction_df
     )[:, 1][0]

@@ -3,6 +3,7 @@ import numpy as np
 import pandas as pd
 import boto3
 from pathlib import Path
+from functools import lru_cache
 
 
 S3_BUCKET = "financial-fraud-detection-169523632531"
@@ -11,23 +12,26 @@ S3_KEY = "models/fraud_model.pkl"
 LOCAL_MODEL_PATH = Path("/tmp/fraud_model.pkl")
 
 
-# Download the model from private S3 when the API starts
-s3 = boto3.client("s3")
-s3.download_file(
-    S3_BUCKET,
-    S3_KEY,
-    str(LOCAL_MODEL_PATH)
-)
+@lru_cache(maxsize=1)
+def load_model():
+    # Download the model from private S3 only when prediction is requested
+    s3 = boto3.client("s3")
 
+    if not LOCAL_MODEL_PATH.exists():
+        s3.download_file(
+            S3_BUCKET,
+            S3_KEY,
+            str(LOCAL_MODEL_PATH)
+        )
 
-# Load the model once when the API starts
-model_data = joblib.load(LOCAL_MODEL_PATH)
+    model_data = joblib.load(LOCAL_MODEL_PATH)
 
-model = model_data["model"]
-threshold = model_data["threshold"]
+    return model_data["model"], model_data["threshold"]
 
 
 def predict_transaction(transaction: dict):
+    model, threshold = load_model()
+
     transaction_df = pd.DataFrame([transaction])
 
     transaction_df["Amount_Log"] = np.log1p(

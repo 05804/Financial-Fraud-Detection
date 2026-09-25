@@ -38,7 +38,6 @@ jobs:
       - name: Build FastAPI Docker image
         run: docker build -f api/Dockerfile -t fraud-api:ci .
 
-
       - name: Scan Streamlit Docker image
         uses: aquasecurity/trivy-action@v0.36.0
         with:
@@ -52,8 +51,26 @@ jobs:
           image-ref: fraud-api:ci
           severity: CRITICAL,HIGH
           exit-code: "0"
+
       - name: Configure AWS credentials
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::169523632531:role/GitHubActions-FinancialFraudDeployment
           aws-region: ap-south-1
+
+      - name: Login to Amazon ECR
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Tag FastAPI image
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          docker tag fraud-api:ci 169523632531.dkr.ecr.ap-south-1.amazonaws.com/financial-fraud-detection:api-${{ github.sha }}
+          docker tag fraud-api:ci 169523632531.dkr.ecr.ap-south-1.amazonaws.com/financial-fraud-detection:api-latest
+
+      - name: Push FastAPI image to ECR
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          docker push 169523632531.dkr.ecr.ap-south-1.amazonaws.com/financial-fraud-detection:api-${{ github.sha }}
+          docker push 169523632531.dkr.ecr.ap-south-1.amazonaws.com/financial-fraud-detection:api-latest

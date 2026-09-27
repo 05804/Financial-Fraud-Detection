@@ -86,6 +86,7 @@ jobs:
           set -u
 
           PREVIOUS_IMAGE="$(docker inspect fraud-api --format '{{.Config.Image}}' 2>/dev/null || true)"
+
           echo "Previous image: ${PREVIOUS_IMAGE:-<none>}"
           echo "New image: __IMAGE_URI__"
 
@@ -96,8 +97,10 @@ jobs:
 
           echo "Logging in to Amazon ECR..."
           aws ecr get-login-password --region ap-south-1 | \
-            docker login --username AWS --password-stdin \
-            169523632531.dkr.ecr.ap-south-1.amazonaws.com
+            docker login \
+              --username AWS \
+              --password-stdin \
+              169523632531.dkr.ecr.ap-south-1.amazonaws.com
 
           echo "Pulling new image..."
           docker pull "__IMAGE_URI__"
@@ -110,6 +113,11 @@ jobs:
           docker run -d \
             --name fraud-api \
             --restart unless-stopped \
+            --log-driver=awslogs \
+            --log-opt awslogs-region=ap-south-1 \
+            --log-opt awslogs-group=/financial-fraud/api \
+            --log-opt awslogs-stream=fraud-api \
+            --log-opt awslogs-create-group=false \
             -p 127.0.0.1:8000:8000 \
             "__IMAGE_URI__"
 
@@ -134,6 +142,11 @@ jobs:
           docker run -d \
             --name fraud-api \
             --restart unless-stopped \
+            --log-driver=awslogs \
+            --log-opt awslogs-region=ap-south-1 \
+            --log-opt awslogs-group=/financial-fraud/api \
+            --log-opt awslogs-stream=fraud-api \
+            --log-opt awslogs-create-group=false \
             -p 127.0.0.1:8000:8000 \
             "$PREVIOUS_IMAGE"
 
@@ -151,12 +164,13 @@ jobs:
           EOF
 
           sed -i "s|__IMAGE_URI__|$IMAGE_URI|g" deploy.sh
+
           DEPLOY_SCRIPT_B64=$(base64 -w0 deploy.sh)
 
           COMMAND_ID=$(aws ssm send-command \
             --instance-ids "$INSTANCE_ID" \
             --document-name "AWS-RunShellScript" \
-            --comment "Deploy Financial Fraud API $GITHUB_SHA with rollback" \
+            --comment "Deploy Financial Fraud API $GITHUB_SHA with rollback and CloudWatch logging" \
             --parameters "commands=[\"echo $DEPLOY_SCRIPT_B64 | base64 -d > /tmp/fraud-deploy.sh && chmod +x /tmp/fraud-deploy.sh && /tmp/fraud-deploy.sh\"]" \
             --query "Command.CommandId" \
             --output text)

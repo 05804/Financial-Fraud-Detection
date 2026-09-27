@@ -1,167 +1,224 @@
-# 💳 Financial Fraud Detection & Risk Prediction
+## Overview
 
-An end-to-end machine learning and production deployment system for detecting potentially fraudulent financial transactions and assigning transaction risk levels.
+This project detects potentially fraudulent credit-card transactions
+and converts model probability into an interpretable 0–100 risk score.
 
-The project started as a machine learning fraud-detection pipeline and was extended into a containerized production-style application with Streamlit, FastAPI, Docker, Amazon ECR, AWS EC2, Amazon S3, AWS Systems Manager, CloudWatch, Nginx, HTTPS, automated CI/CD, security scanning, health checks, rollback protection, and automatic Docker image cleanup.
+The system evolved from an ML experimentation project into a
+production-style application with:
+
+- XGBoost fraud detection
+- Streamlit dashboard
+- FastAPI inference API
+- Docker containers
+- Amazon S3 model storage
+- Amazon ECR
+- EC2 deployment
+- GitHub Actions CI/CD
+- AWS OIDC authentication
+- CloudWatch logging
+- Nginx + HTTPS
+- Automated rollback
+- Docker image cleanup
+
+
+Then a compact Results section rather than spreading metrics throughout the README:
+
+Model	PR-AUC
+Logistic Regression	0.7190
+Random Forest	0.8629
+XGBoost	0.8771
+
+And:
+
+Final XGBoost	Result
+Precision	88%
+Recall	85%
+F1	0.86
+PR-AUC	0.8771
+
+That would look much cleaner and more professional.
+
+Also, I would keep the AWS/DevOps material, because that's actually one of the strongest parts of your project—but present it as an architecture + deployment section, rather than dozens of separate headings.
+
+If you want, I'll
+rewrite the entire existing README into this polished GitHub-style format, while keeping all your real project details and metrics, and then we'll replace the current README and commit the improved version.
+
+Rewrite the entire existing README into this polished GitHub-style format
+
+Absolutely. Let's make it look like a serious GitHub portfolio project rather than a report.
+
+Below is the complete replacement for your existing README.md. It keeps your actual ML results and the AWS/DevOps work, but uses a much cleaner hierarchy, fewer headings, compact tables, badges, and better spacing.
+
+Open the existing README:
+
+notepad README.md
+
+Delete everything and paste this entire version:
+
+# Financial Fraud Detection & Risk Prediction
+
+End-to-end fraud detection system combining machine learning, REST APIs, containerization, AWS infrastructure, monitoring, and automated CI/CD.
+
+[![Python](https://img.shields.io/badge/Python-3.11-3776AB?logo=python&logoColor=white)](https://www.python.org/)
+[![XGBoost](https://img.shields.io/badge/XGBoost-ML-189FDD)](https://xgboost.readthedocs.io/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-API-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
+[![Docker](https://img.shields.io/badge/Docker-Containerized-2496ED?logo=docker&logoColor=white)](https://www.docker.com/)
+[![AWS](https://img.shields.io/badge/AWS-Deployed-FF9900?logo=amazonaws&logoColor=white)](https://aws.amazon.com/)
+[![GitHub Actions](https://img.shields.io/badge/CI%2FCD-GitHub%20Actions-2088FF?logo=githubactions&logoColor=white)](https://github.com/features/actions)
+
+**Live API:** https://skfrauddetection.duckdns.org
+**Repository:** https://github.com/05804/Financial-Fraud-Detection
 
 ---
 
-## 🚀 Project Highlights
+## Overview
 
-- Fraud detection using Logistic Regression, Random Forest, and XGBoost
-- Severe class-imbalance handling
-- Transaction feature engineering
-- Probability-based fraud detection
-- Decision-threshold optimization
-- Risk scoring from 0–100
+Financial fraud detection is a highly imbalanced binary classification problem where fraudulent transactions represent only a very small fraction of total transactions.
+
+This project detects potentially fraudulent transactions and converts the model's fraud probability into an interpretable **0–100 risk score**.
+
+The project evolved from an exploratory machine learning pipeline into a production-style application with:
+
+- Machine learning model development and evaluation
+- Feature engineering and threshold optimization
 - Interactive Streamlit dashboard
-- Production FastAPI prediction API
-- Private Amazon S3 model storage
-- Dockerized application
+- FastAPI inference service
+- Docker containerization
+- Private model storage in Amazon S3
 - Amazon ECR container registry
 - AWS EC2 deployment
-- AWS Systems Manager deployment automation
-- CloudWatch application and Nginx logging
-- Nginx reverse proxy with HTTPS
+- AWS Systems Manager deployment
+- CloudWatch logging
+- Nginx reverse proxy and HTTPS
 - GitHub Actions CI/CD
-- GitHub Actions → AWS authentication using OIDC
+- AWS OIDC authentication
 - Trivy container security scanning
-- Automated deployment health checks
-- Automatic rollback on failed deployment
+- Automated health checks
+- Deployment rollback
 - Automatic Docker image cleanup
 
 ---
 
-## 📌 Project Overview
+## System Architecture
 
-Financial fraud detection is a highly imbalanced binary classification problem because fraudulent transactions are much rarer than normal transactions.
+```text
+                         ┌──────────────────────┐
+                         │      GitHub Repo     │
+                         │ Financial Fraud App  │
+                         └──────────┬───────────┘
+                                    │
+                                    ▼
+                         ┌──────────────────────┐
+                         │   GitHub Actions     │
+                         │      CI / CD         │
+                         └──────────┬───────────┘
+                                    │
+              ┌─────────────────────┼─────────────────────┐
+              │                     │                     │
+              ▼                     ▼                     ▼
+           Pytest                 Trivy             Docker Build
+                                                        │
+                                                        ▼
+                                                 ┌──────────────┐
+                                                 │ Amazon ECR   │
+                                                 └──────┬───────┘
+                                                        │
+                                                        ▼
+                                                 ┌──────────────┐
+                                                 │ AWS Systems  │
+                                                 │   Manager    │
+                                                 └──────┬───────┘
+                                                        │
+                                                        ▼
+                  ┌──────────────────────────────────────────────────┐
+                  │                     AWS EC2                      │
+                  │                                                  │
+                  │                  Nginx + HTTPS                   │
+                  │                        │                         │
+                  │                        ▼                         │
+                  │                  FastAPI Docker                  │
+                  │                        │                         │
+                  └────────────────────────┼─────────────────────────┘
+                                           │
+                           ┌───────────────┼───────────────┐
+                           │               │               │
+                           ▼               ▼               ▼
+                       Amazon S3      CloudWatch        Public API
+                    Model Storage       Logs             HTTPS
+Machine Learning
+Dataset
 
-This project covers the complete machine learning lifecycle:
+The project uses the Credit Card Fraud Detection dataset.
 
-1. Exploratory Data Analysis
-2. Feature Engineering
-3. Class-Imbalance Handling
-4. Model Training
-5. Model Comparison
-6. Decision Threshold Optimization
-7. Final Model Evaluation
-8. Fraud Probability Prediction
-9. Risk Scoring
-10. Interactive Dashboard
-11. REST API Deployment
-12. Containerization
-13. Cloud Deployment
-14. CI/CD Automation
-15. Production Monitoring
-16. Deployment Rollback and Cleanup
+Metric	Value
+Total transactions	284,807
+Normal transactions	284,315
+Fraudulent transactions	492
+Fraud percentage	0.1727%
 
----
+The dataset contains anonymized features V1 through V28, together with Time, Amount, and Class.
 
-## 📊 Dataset
+Class = 0 → Normal transaction
+Class = 1 → Fraudulent transaction
 
-The project uses the **Credit Card Fraud Detection** dataset.
-
-### Dataset Statistics
-
-| Metric | Value |
-|---|---:|
-| Total transactions | 284,807 |
-| Normal transactions | 284,315 |
-| Fraudulent transactions | 492 |
-| Fraud percentage | 0.1727% |
-
-The dataset contains anonymized transaction features:
-
-- `Time`
-- `Amount`
-- `V1` through `V28`
-- `Class`
-
-Where:
-
-- `Class = 0` → Normal transaction
-- `Class = 1` → Fraudulent transaction
-
-The raw dataset is not intended to be committed to GitHub.
+The raw dataset is not intended to be committed to the public repository.
 
 Expected location:
 
-```text
 data/raw/creditcard.csv
+Feature Engineering
 
-⚙️ Feature Engineering
+The prediction pipeline generates the following engineered features:
 
-The prediction pipeline creates additional transaction features.
+Feature	Description
+Amount_Log	Log-transformed transaction amount
+Hour	Approximate transaction hour derived from Time
+Hour_Sin	Cyclical representation of hour
+Hour_Cos	Cyclical representation of hour
 
-Amount_Log
+The same feature engineering logic is applied during API inference to ensure consistency between model training and production predictions.
 
-Logarithmic transformation of transaction amount:
+Models
 
-log1p(Amount)
+Three classification approaches were evaluated:
 
-This helps reduce the influence of very large transaction amounts.
+Model	PR-AUC
+Logistic Regression	0.7190
+Random Forest	0.8629
+XGBoost	0.8771
 
-Hour
+XGBoost was selected as the final prediction model.
 
-The original Time value is converted into an approximate transaction hour.
-
-Hour_Sin and Hour_Cos
-
-Cyclical transformations represent the 24-hour nature of transaction activity.
-
-These engineered features are also generated by the production FastAPI prediction pipeline before inference.
-
-🤖 Machine Learning
-
-Three classification approaches were evaluated.
-
-Logistic Regression
-
-Used as the baseline classification model.
-
-PR-AUC: 0.7190
-
-Random Forest
-
-A tree-based ensemble model using class weighting to address severe class imbalance.
-
-PR-AUC: 0.8629
-
-XGBoost
-
-A gradient boosting model used as the final prediction model.
-
-PR-AUC: 0.8771
-
-⚖️ Class Imbalance
+Imbalanced Classification
 
 Fraudulent transactions represent only approximately 0.17% of the dataset.
 
-Because of this severe imbalance, accuracy alone is not an appropriate evaluation metric.
-
-The project focuses on:
+The project therefore focuses on fraud-sensitive metrics rather than accuracy alone:
 
 Precision
 Recall
 F1-score
 PR-AUC
 
-The project also evaluated SMOTE as an imbalance-handling experiment.
+Class weighting and SMOTE were also evaluated as approaches for handling class imbalance.
 
-🎯 Threshold Optimization
+Threshold Optimization
 
-A default classification threshold of 0.5 is not always optimal for fraud detection.
+The default probability threshold of 0.5 was not assumed to be optimal.
 
-Multiple probability thresholds were evaluated using validation data.
+Multiple thresholds were evaluated using validation data.
 
-For the final XGBoost model:
+The selected threshold for the final XGBoost model was:
 
-Selected threshold: 0.2
-Validation F1-score: 0.8456
+0.2
 
-The selected threshold was then stored with the trained model and used during API inference.
+Validation F1-score:
 
-📈 Final XGBoost Results
+0.8456
+
+The optimized threshold is stored with the trained model and used during API inference.
+
+Model Performance
 
 The final XGBoost model was evaluated on an untouched test set.
 
@@ -177,25 +234,24 @@ Actual Fraud	15	83
 
 The model correctly detected 83 fraudulent transactions and missed 15 fraudulent transactions in the final test set.
 
-🛡️ Risk Scoring
+Risk Scoring
 
-The application converts the model's fraud probability into a risk score from 0 to 100.
+The application converts fraud probability into a score between 0 and 100.
 
 Risk Score = Fraud Probability × 100
-Risk Score	Risk Level
+Score	Risk Level
 0–29.99	Low Risk
 30–69.99	Medium Risk
 70–100	High Risk
 
-The final XGBoost fraud classification threshold is 0.2.
+The risk level is derived from the probability score, while the fraud/normal classification uses the optimized threshold of 0.2.
 
-The risk level is calculated independently from the fraud classification threshold.
+Application
+Streamlit Dashboard
 
-🖥️ Streamlit Dashboard
+The project includes an interactive dashboard for transaction-level fraud analysis.
 
-The project includes an interactive Streamlit dashboard for transaction-level fraud analysis.
-
-The dashboard provides:
+Features include:
 
 Transaction selection
 Transaction amount
@@ -210,10 +266,10 @@ Fraud analytics
 Model performance
 Risk-level guide
 
-Run locally with:
+Run locally:
 
 streamlit run app/app.py
-📸 Dashboard Screenshots
+Dashboard Screenshots
 Main Dashboard
 
 Fraud Analytics
@@ -222,11 +278,11 @@ Fraud Detection Example
 
 Additional Dashboard View
 
-🚀 FastAPI Prediction API
+FastAPI
 
-The project also provides a production-style REST API using FastAPI.
+The machine learning model is exposed through a REST API built with FastAPI.
 
-API Endpoints
+Endpoints
 Method	Endpoint	Purpose
 GET	/	API status
 GET	/health	Health check
@@ -234,21 +290,21 @@ POST	/predict	Fraud prediction
 Health Check
 GET /health
 
-Example response:
+Response:
 
 {
   "status": "healthy"
 }
-Prediction
+Prediction Request
 POST /predict
 
-The request contains:
+The request accepts:
 
 Time
 Amount
 V1 through V28
 
-The API returns:
+The API performs the same feature engineering used during model development and returns:
 
 {
   "fraud_probability": 0.1234,
@@ -256,145 +312,47 @@ The API returns:
   "risk_level": "Low Risk",
   "prediction": "NORMAL"
 }
-Prediction Pipeline
+Production Model Loading
 
-The API:
-
-Receives transaction data
-Generates engineered features
-Loads the trained model
-Retrieves the stored classification threshold
-Calculates fraud probability
-Generates a 0–100 risk score
-Assigns a risk level
-Returns the fraud prediction
-☁️ Production Model Storage
-
-The trained model is stored in a private Amazon S3 bucket.
-
-The API retrieves:
+The API retrieves the trained model from a private Amazon S3 location:
 
 models/fraud_model.pkl
 
-from private S3 when the model is first required.
-
-The model is then cached locally at:
+The model is downloaded only when prediction is first requested and is then cached locally at:
 
 /tmp/fraud_model.pkl
 
-using an in-process cache so that repeated predictions do not repeatedly download the model.
+The stored model contains both the trained model and the optimized classification threshold.
 
-The stored model contains both:
+Cloud Deployment
 
-Trained ML model
-Optimized classification threshold
-🐳 Docker
+The production API is deployed on AWS using a containerized architecture.
 
-The FastAPI service is containerized using Docker.
+Service	Purpose
+Amazon EC2	Hosts the production API
+Amazon ECR	Stores versioned Docker images
+Amazon S3	Private ML model storage
+AWS Systems Manager	Remote deployment execution
+Amazon CloudWatch	Application and Nginx logging
+IAM	Access control
+Nginx	Reverse proxy
+HTTPS	Secure public API access
 
-The API container:
+The production endpoint is:
 
-Runs FastAPI with Uvicorn
-Exposes port 8000
-Uses a lightweight Python base image
-Sends application logs directly to Amazon CloudWatch
+https://skfrauddetection.duckdns.org
 
-The Streamlit application is also container-ready.
+Health check:
 
-Docker provides a consistent runtime between development and production.
+https://skfrauddetection.duckdns.org/health
+CI/CD
 
-🏗️ Production Architecture
-                    ┌──────────────────────┐
-                    │      GitHub Repo     │
-                    │ Financial Fraud App  │
-                    └──────────┬───────────┘
-                               │
-                               ▼
-                    ┌──────────────────────┐
-                    │   GitHub Actions     │
-                    │   CI/CD Pipeline     │
-                    └──────────┬───────────┘
-                               │
-                 ┌─────────────┼─────────────┐
-                 │             │             │
-                 ▼             ▼             ▼
-              Pytest        Trivy        Docker Build
-                                           │
-                                           ▼
-                                    ┌──────────────┐
-                                    │ Amazon ECR   │
-                                    └──────┬───────┘
-                                           │
-                                           ▼
-                                    ┌──────────────┐
-                                    │ AWS SSM      │
-                                    │ Deployment   │
-                                    └──────┬───────┘
-                                           │
-                                           ▼
-                              ┌────────────────────────┐
-                              │       AWS EC2          │
-                              │                        │
-                              │       Nginx            │
-                              │          │             │
-                              │          ▼             │
-                              │     FastAPI API        │
-                              │      Docker            │
-                              └──────────┬─────────────┘
-                                         │
-                     ┌───────────────────┼───────────────────┐
-                     │                   │                   │
-                     ▼                   ▼                   ▼
-                 Amazon S3          CloudWatch          HTTPS
-              Model Storage          Logging           Public API
-☁️ AWS Infrastructure
-
-The production deployment uses:
-
-Amazon EC2
-
-Hosts the production FastAPI Docker container.
-
-Amazon ECR
-
-Stores versioned Docker images for the FastAPI service.
-
-Amazon S3
-
-Stores the trained ML model privately.
-
-AWS Systems Manager
-
-Used by GitHub Actions to execute deployment commands on the EC2 instance without exposing SSH credentials in the CI/CD pipeline.
-
-Amazon CloudWatch
-
-Collects:
-
-FastAPI application logs
-Nginx access logs
-Nginx error logs
-Nginx
-
-Acts as the reverse proxy in front of FastAPI.
-
-HTTPS
-
-The public API is exposed through HTTPS.
-
-🔄 CI/CD Pipeline
-
-GitHub Actions automates the deployment process.
-
-The pipeline performs:
+GitHub Actions automates testing, security scanning, image publishing, deployment, verification, and cleanup.
 
 Git Push
    │
    ▼
-Checkout Repository
-   │
-   ▼
-Install Python Dependencies
+Checkout
    │
    ▼
 Run Tests
@@ -403,108 +361,89 @@ Run Tests
 Build Docker Images
    │
    ▼
-Run Trivy Security Scan
+Trivy Security Scan
    │
    ▼
-Authenticate to AWS using OIDC
+AWS OIDC Authentication
    │
    ▼
-Login to Amazon ECR
+Amazon ECR Login
    │
    ▼
-Build and Push Versioned Image
+Push Versioned Image
    │
    ▼
-Deploy through AWS Systems Manager
+AWS Systems Manager Deployment
    │
    ▼
-Run Local Health Check
+Local Health Check
    │
-   ├── Success ──► Cleanup Previous Images
+   ├── Healthy ──► Cleanup Previous Images
    │
-   └── Failure ──► Automatic Rollback
+   └── Failed ───► Automatic Rollback
    │
    ▼
 External HTTPS Health Check
-🔐 AWS OIDC Authentication
+AWS OIDC
 
-GitHub Actions uses OpenID Connect (OIDC) to authenticate with AWS.
+GitHub Actions authenticates with AWS using OpenID Connect rather than storing long-lived AWS access keys in GitHub.
 
-This avoids storing long-lived AWS access keys inside GitHub Actions secrets.
+Security Scanning
 
-The deployment role is restricted to the permissions required for the deployment workflow.
+Docker images are scanned using Trivy before deployment.
 
-🔍 Container Security Scanning
+Deployment Safety
 
-The CI/CD pipeline uses Trivy to scan Docker images for security vulnerabilities.
+The deployment process records the currently running image before replacing it.
 
-The scan is performed before images are pushed to Amazon ECR.
+If the new container fails its health check:
 
-This adds a security-checking stage to the deployment pipeline.
+The failed container is removed.
+The previous image is restored.
+The previous container is started.
+A rollback health check is performed.
 
-🔄 Deployment Rollback Protection
+This provides automatic rollback protection during deployments.
 
-The deployment process records the currently running Docker image before replacing it.
+Infrastructure Monitoring
 
-The process then:
+Application and reverse-proxy logs are collected in Amazon CloudWatch.
 
-Pulls the new image
-Stops the current container
-Starts the new container
-Performs a local health check
-Keeps the deployment if healthy
-Removes the failed container if unhealthy
-Pulls the previous image
-Starts the previous version
-Performs another health check
+Log Groups
+/financial-fraud/api
+/financial-fraud/nginx/access
+/financial-fraud/nginx/error
 
-This provides automatic rollback protection when a newly deployed version fails its health check.
+The FastAPI container sends application logs directly to CloudWatch using the AWS Logs Docker driver.
 
-🧹 Automatic Docker Image Cleanup
+Nginx access and error logs are collected through the CloudWatch Agent.
 
-The EC2 deployment script automatically removes the previous Docker image after a successful deployment.
+Docker Resource Management
+
+The EC2 deployment automatically removes the previous Docker image after a successful deployment.
 
 Unused Docker images and build artifacts are also cleaned up.
 
-This prevents old deployment images from continuously consuming EC2 disk space.
+This prevents repeated deployments from continuously consuming EC2 storage.
 
-The cleanup was specifically added after identifying disk-space pressure on the production instance.
+During deployment verification, disk usage was reduced from approximately 98% to 41% after removing obsolete Docker images and unused artifacts.
 
-After cleanup verification, the production root disk was reduced from approximately 98% utilization to approximately 41% utilization.
+Final Docker resource verification showed:
 
-The Docker host was also verified with:
-
-docker system df
-
-showing no remaining build cache or unused volumes.
-
-❤️ Production Health Checks
-
-The deployment performs multiple health checks.
-
-Local API Health Check
-http://127.0.0.1:8000/health
-Public HTTPS Health Check
-https://skfrauddetection.duckdns.org/health
-
-Expected response:
-
-{
-  "status": "healthy"
-}
-
-The public endpoint is currently deployed through Nginx and HTTPS.
-
-🧪 Testing
+Images:       1
+Containers:   1
+Volumes:      0
+Build Cache:  0
+Testing
 
 API tests are located in:
 
 tests/test_api.py
 
-Run the test suite with:
+Run the test suite:
 
 pytest
-📁 Project Structure
+Project Structure
 Financial-Fraud-Detection/
 │
 ├── api/
@@ -543,32 +482,28 @@ Financial-Fraud-Detection/
 ├── .gitignore
 ├── README.md
 └── requirements.txt
-💻 Local Setup
-1. Clone the Repository
+Local Development
+Clone
 git clone https://github.com/05804/Financial-Fraud-Detection.git
-2. Open the Project
 cd Financial-Fraud-Detection
-3. Create a Virtual Environment
+Create Environment
 python -m venv .venv
-4. Activate the Environment
-
-Windows PowerShell:
-
+Activate on Windows
 .venv\Scripts\activate
-5. Install Dependencies
+Install Dependencies
 pip install -r requirements.txt
-6. Add the Dataset
+Add Dataset
 
 Place the dataset at:
 
 data/raw/creditcard.csv
-7. Run the Prediction Pipeline
+Run Prediction Pipeline
 python src/predict.py
-8. Run the Streamlit Dashboard
+Run Dashboard
 streamlit run app/app.py
-9. Run API Tests
+Run Tests
 pytest
-🛠️ Technologies Used
+Technology Stack
 Machine Learning
 Python
 Pandas
@@ -577,16 +512,16 @@ Scikit-learn
 XGBoost
 imbalanced-learn
 Joblib
-Visualization
-Matplotlib
-Seaborn
+Application
 Streamlit
-API
 FastAPI
 Pydantic
 Uvicorn
-Containerization
+DevOps
 Docker
+GitHub Actions
+Trivy
+Nginx
 AWS
 Amazon EC2
 Amazon ECR
@@ -595,83 +530,66 @@ AWS Systems Manager
 Amazon CloudWatch
 IAM
 AWS OIDC
-DevOps / CI/CD
-GitHub Actions
-Trivy
-Nginx
-HTTPS
-Docker logging
-🧠 Key Concepts Demonstrated
-Binary classification
-Fraud detection
-Highly imbalanced datasets
-Exploratory Data Analysis
+Engineering Concepts
+
+This project demonstrates practical experience with:
+
+Imbalanced binary classification
 Feature engineering
-SMOTE
-Class weighting
-Logistic Regression
-Random Forest
-XGBoost
-Precision and Recall
-F1-score
-PR-AUC
-Decision threshold optimization
+Model evaluation
+Threshold optimization
 Model persistence
-Prediction pipelines
-REST APIs
-FastAPI
-Docker
-Container registries
+REST API development
+Docker containerization
 Cloud deployment
-CI/CD
-AWS OIDC
-Infrastructure monitoring
-CloudWatch logging
+CI/CD automation
+AWS IAM and OIDC
+Container security scanning
+Application monitoring
 Health checks
 Deployment rollback
+Infrastructure maintenance
 Automated resource cleanup
-⚠️ Limitations
+Limitations
 The dataset contains anonymized features, limiting real-world interpretability.
 Model performance depends on the characteristics of the training dataset.
 The fraud threshold represents a trade-off between precision and recall.
-The project is a demonstration system and should not be treated as a production banking fraud engine without additional validation, monitoring, security controls, and domain-specific requirements.
-📈 Project Evolution
-
-The project evolved through multiple stages:
-
-Machine Learning
-      ↓
+This project is a demonstration system and is not intended to replace a production banking fraud engine without additional validation, monitoring, security controls, and domain-specific requirements.
+Project Evolution
+ML Pipeline
+    ↓
 Feature Engineering
-      ↓
+    ↓
 Model Comparison
-      ↓
+    ↓
 Threshold Optimization
-      ↓
+    ↓
 Streamlit Dashboard
-      ↓
-FastAPI Prediction API
-      ↓
+    ↓
+FastAPI API
+    ↓
 Docker
-      ↓
-AWS EC2 + ECR + S3
-      ↓
-GitHub Actions CI/CD
-      ↓
-AWS OIDC Authentication
-      ↓
-CloudWatch Monitoring
-      ↓
-Nginx + HTTPS
-      ↓
-Automated Rollback
-      ↓
-Automatic Docker Image Cleanup
+    ↓
+AWS Deployment
+    ↓
+CI/CD
+    ↓
+Cloud Monitoring
+    ↓
+Rollback Protection
+    ↓
+Automated Resource Cleanup
 
-The result is a complete end-to-end machine learning application that demonstrates not only model development, but also API engineering, containerization, cloud deployment, CI/CD, monitoring, security scanning, reliability, and operational maintenance.
+The final system demonstrates the progression from a machine learning experiment to a deployable, monitored, and automated application.
 
-👨‍💻 Author
+Author
 
 Shaik Junaid
 
-B.Tech - Computer Science & Engineering (Data Science)
+B.Tech — Computer Science & Engineering (Data Science)
 
+⭐ Project
+
+Financial Fraud Detection & Risk Prediction
+
+Built as an end-to-end Data Science + Machine Learning + Cloud/DevOps project.

@@ -125,6 +125,21 @@ jobs:
 
           if curl -fsS http://127.0.0.1:8000/health; then
             echo "New deployment is healthy."
+
+            echo "Removing previous Docker image..."
+            if [ "$PREVIOUS_IMAGE" != "__IMAGE_URI__" ]; then
+              docker image rm "$PREVIOUS_IMAGE" || true
+            fi
+
+            echo "Removing unused Docker images..."
+            docker image prune -af || true
+
+            echo "Disk usage after cleanup:"
+            df -h /
+
+            echo "Docker disk usage after cleanup:"
+            docker system df
+
             exit 0
           fi
 

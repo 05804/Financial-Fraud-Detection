@@ -170,7 +170,7 @@ jobs:
           COMMAND_ID=$(aws ssm send-command \
             --instance-ids "$INSTANCE_ID" \
             --document-name "AWS-RunShellScript" \
-            --comment "Deploy Financial Fraud API $GITHUB_SHA with rollback and CloudWatch logging" \
+            --comment "Deploy Fraud API $GITHUB_SHA - rollback + CloudWatch" \
             --parameters "commands=[\"echo $DEPLOY_SCRIPT_B64 | base64 -d > /tmp/fraud-deploy.sh && chmod +x /tmp/fraud-deploy.sh && /tmp/fraud-deploy.sh\"]" \
             --query "Command.CommandId" \
             --output text)
